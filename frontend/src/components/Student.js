@@ -71,7 +71,7 @@ const Student = () => {
 
             Toast.fire( {
                 icon: 'success',
-                title: 'Student Info Added successfully'
+                title: 'Student Added successfully'
             })
 
             //clear form after saving student info
@@ -139,7 +139,7 @@ const Student = () => {
 
             Toast.fire( {
                 icon: 'success',
-                title: 'Student Info Updated successfully'
+                title: 'Student Updated successfully'
             })
 
             //clear form after updating student info
@@ -195,7 +195,7 @@ const Student = () => {
             ) {
                 swalWithBootstrapButtons.fire(
                     'Cancelled',
-                    'Your imaginary file is safe )',
+                    'Your data is safe )',
                     'error'
                 )
             }
