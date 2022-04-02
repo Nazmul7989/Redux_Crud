@@ -3,14 +3,18 @@ import {Modal} from "react-bootstrap";
 import axios from "axios";
 import Swal from 'sweetalert2'
 import Loading from "./Loading";
+import {useDispatch, useSelector} from "react-redux";
+
 
 const Student = () => {
+
+    const students = useSelector((state) => state.StudentReducer.students)
+    const dispatch = useDispatch()
 
     //modal
     const [modalShow, setModalShow] = useState(false);
 
     const handleClose = ()=>setModalShow(false)
-
 
     //changing inner text of add and edit button
     const [addNew,setAddNew] = useState(true)
@@ -21,6 +25,10 @@ const Student = () => {
     const [age,setAge] = useState("");
     const [classname,setClassname] = useState("");
     const [loading,setLoading] = useState(true);
+
+    //validation error
+    const [error,setError] = useState([])
+
 
     //when click on add student button, show modal and clear form
     const addStudent = ()=>{
@@ -35,6 +43,7 @@ const Student = () => {
         setName("")
         setAge("")
         setClassname("")
+        setError([]);
     }
 
     //clear form when click on modal close button
@@ -77,20 +86,19 @@ const Student = () => {
             //clear form after saving student info
             clearForm()
         }).catch((error)=>{
-            console.log(error);
+            setError(error.data.validation_error);
         });
 
 
     }
 
-    //set data from fetched student info
-    const [students,setStudents] = useState([]);
+
 
     //fetch all student info
     const getStudents = ()=>{
         axios.get('http://localhost:8000/api/student').then((response)=>{
             let studentsData = response.data.students;
-            setStudents(studentsData);
+            dispatch({ type: 'updateStudent', payload: studentsData})
             setLoading(false)
 
         }).catch((error)=>{
@@ -146,7 +154,7 @@ const Student = () => {
             clearForm()
 
         }).catch((error)=>{
-            console.log(error);
+             setError(error.data.validation_error);
         });
 
 
@@ -154,8 +162,6 @@ const Student = () => {
 
     //delete student
     const deleteStudent = async (e,id)=>{
-
-        const currenTargetButton = e.currentTarget;
 
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -177,8 +183,7 @@ const Student = () => {
             if (result.isConfirmed) {
 
                 axios.delete('http://localhost:8000/api/student/delete/'+id).then(()=>{
-
-                    currenTargetButton.closest('tr').remove();
+                    getStudents();
 
                 }).catch((error)=>{
                     console.log(error);
@@ -270,18 +275,21 @@ const Student = () => {
                                         <div className="col-12">
                                             <div className="form-group mb-3">
                                                 <input type="text" name="name" value={name} onChange={(e)=>{setName(e.target.value)}}   id="name" className="form-control" placeholder="Your Name"/>
+                                                <span className="text-danger">{error.name}</span>
                                             </div>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="form-group mb-3">
                                                 <input type="text" name="age" id="age" value={age} onChange={(e)=>{setAge(e.target.value)}}    className="form-control" placeholder="Your Age"/>
+                                                <span className="text-danger">{error.age}</span>
                                             </div>
                                         </div>
 
                                         <div className="col-12">
                                             <div className="form-group mb-3">
                                                 <input type="text" name="class" id="class" value={classname} onChange={(e)=>{setClassname(e.target.value)}}   className="form-control" placeholder="Your Class"/>
+                                                <span className="text-danger">{error.class}</span>
                                             </div>
                                         </div>
 
