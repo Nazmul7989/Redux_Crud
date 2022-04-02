@@ -3,7 +3,7 @@ const initialState = {
     students: [],
 }
 
-function StudentReducer(state = initialState, action){
+function studentReducer(state = initialState, action){
     switch (action.type) {
         case 'updateStudent':
             return {
@@ -16,4 +16,4 @@ function StudentReducer(state = initialState, action){
     }
 }
 
-export default StudentReducer;
+export default studentReducer;

@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 const Student = () => {
 
-    const students = useSelector((state) => state.StudentReducer.students)
+    const students = useSelector((state) => state.studentReducer.students)
     const dispatch = useDispatch()
 
     //modal

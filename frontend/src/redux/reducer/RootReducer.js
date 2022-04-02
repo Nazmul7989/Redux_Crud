@@ -1,11 +1,8 @@
 import {combineReducers} from "redux";
-import StudentReducer from "./StudentReducer";
-import CounterReducer from "./CounterReducer";
-
+import studentReducer from "./StudentReducer";
+import counterReducer from "./CounterReducer";
 
 export default combineReducers({
-    // StudentReducer: StudentReducer,
-    StudentReducer,
-    CounterReducer
-
+    studentReducer: studentReducer,
+    counterReducer: counterReducer,
 })
